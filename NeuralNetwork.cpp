@@ -1,4 +1,5 @@
-//sairam this is an implementation of logistic regression
+//This is an implementation of two layered fully connected neural network.
+//Author: Ajay Singh Pawar
 #include<iostream>
 #include<time.h>
 #include<opencv2/highgui/highgui.hpp>
@@ -51,36 +52,6 @@ int read_image( long double *a, int *num, int count, int *y)
 	
 return 0;
 }
-/*
-void weights_activated(long double w[10][784])
-{
-	long double sum=0;
-
-	for(int i=0; i<10; i++)
-	{	for(int j=0; j<784; j++)
-		{
-			sum+=w[i][j];
-		}
-		cout<<"W["<<i<<"]="<<(sum/784)*0.001<<endl;
-		sum=0;
-	}		
-return ;
-}
-void weights_change(long double w[10][784])
-{
-	long double sum=0;
-
-	for(int i=0; i<10; i++)
-	{	for(int j=0; j<784; j++)
-		{
-			sum+=w[i][j];
-		}
-		cout<<"W["<<i<<"]="<<sum/784<<endl;
-		sum=0;
-	}		
-return ;
-}
-*/
 int maximum(long double *g)
 {
 	int label=0;
@@ -127,7 +98,6 @@ void Predict_accuracy(long double w1[Hidden_layer_1][784], long double w2[Hidden
 				x[k]/=255;
 			}
 		}
-		//cout<<"g1[i]"<<endl;
 		for(int j=0; j<Hidden_layer_1; j++)
 		{	
 			for(int i=0; i<784; i++)
@@ -139,10 +109,7 @@ void Predict_accuracy(long double w1[Hidden_layer_1][784], long double w2[Hidden
 				g1[j]=0;
 			else
 				g1[j]=z1[j];
-			//g1[j]=sigmoid(z1[j]);
-		//	cout<<g1[j]<<endl;
 		}
-	//	cout<<"g2[j]"<<endl;
 		for(int i=0; i<Hidden_layer_2; i++)
 		{
 			for(int j=0; j<Hidden_layer_1; j++)
@@ -154,10 +121,8 @@ void Predict_accuracy(long double w1[Hidden_layer_1][784], long double w2[Hidden
 				g2[i]=0;
 			else
 				g2[i]=z2[i];
-	//		cout<<g2[i]<<endl;
 		}
 	
-	//	cout<<"g3[i]"<<endl;
 		for(int i=0; i<10; i++)
 		{	
 			for(int j=0; j< Hidden_layer_2; j++)
@@ -171,7 +136,6 @@ void Predict_accuracy(long double w1[Hidden_layer_1][784], long double w2[Hidden
 		for(int i=0; i<10; i++)
 		{
 			g3[i] /= sum;
-		//	cout<<g3[i]<<endl;
 		}
 	 	label=maximum(g3);
 
@@ -312,7 +276,6 @@ for(int h=0; h<50; h++)
 			}
 			sum=0;
 		//////////////////////////Forward Prop Starts
-		//	cout<<"g1[j]"<<endl;
 			for(int j=0; j<Hidden_layer_1; j++)
 			{
 				for(int i=0; i<784; i++)
@@ -324,17 +287,13 @@ for(int h=0; h<50; h++)
 					g1[j]=z1[j];
 				else
 					g1[j]=0;	
-			//	g1[j]=sigmoid(z1[j]);
-		//		cout<<g1[j]<<endl;
 			}
-		//	cout<<"z2[i]"<<endl;
 			for(int i=0; i<Hidden_layer_2; i++)
 			{	
 				for(int j=0; j< Hidden_layer_1; j++)
 				{
 					z2[i]+= w2[i][j]*g1[j];
 				}
-		//		cout<<z2[i]<<endl;
 				z2[i]+=b2[i];
 				if(z2[i]>=0)
 					g2[i]=z2[i];
@@ -356,13 +315,8 @@ for(int h=0; h<50; h++)
 			{
 				g3[i] /= sum;
 			}	
-		////////////////////////Forward Prop Over
-		//	cout<<"g3"<<endl;
-		//	if(num[pos[k]]==maximum(g3))
-		//		count++;
 			for(int i=0; i<10; i++)
 			{
-		//		cout<<g3[i]<<endl;				//////////////////Loss computation
 				if(g3[i]==0)
 				{
 					cout<<"Log error:"<<endl;
@@ -371,7 +325,6 @@ for(int h=0; h<50; h++)
 				else
 					Loss+= -(y[i]*log(g3[i]));
 			}
-		//	pred[maximum(g2)]++;
 			for(int i=0; i<10; i++)
 			{
 				for(int j=0; j<Hidden_layer_2; j++)
@@ -387,12 +340,9 @@ for(int h=0; h<50; h++)
 				{
 					dz2[i]+=w3[j][i]*(g3[j]-y[j]);
 				}
-				//dz2[i]/=10;
 				if(z2[i]<0)
 					dz2[i]=0;
-				//dz1[i]*=g1[i]*(1-g1[i]);
 			}
-//*	
 			for(int j=0; j<Hidden_layer_2; j++)
 			{
 				for(int l=0; l<Hidden_layer_1; l++)
@@ -408,10 +358,8 @@ for(int h=0; h<50; h++)
 				{
 					dz1[i]+=dz2[j]*w2[j][i];
 				}
-			//	dz1[i]/=Hidden_layer_2;
 				if(z1[i]<0)
 					dz1[i]=0;
-				//dz1[i]*=g1[i]*(1-g1[i]);
 			}
 		
 			for(int i=0; i<Hidden_layer_1; i++)
@@ -424,9 +372,6 @@ for(int h=0; h<50; h++)
 			}
 	
 	}
-	//	cout<<"count= "<< count<<endl;
-		//count=0;
-	 //	cout<<"Predictions\n"<<endl;	
 		for(int i=0; i<10; i++)
 		{
 			for(int j=0; j<Hidden_layer_2; j++)
@@ -442,11 +387,9 @@ for(int h=0; h<50; h++)
 		{
 			for(int j=0; j<Hidden_layer_1; j++)
 			{
-			//	activation_w2[i][j]/=batch_size;
 				w2[i][j]-=alpha*activation_w2[i][j];
 				activation_w2[i][j]=0;	
 			}
-		//	activation_b2[i]/=batch_size;
 			b2[i] -= alpha*activation_b2[i];
 			activation_b2[i]=0;
 		}
@@ -455,11 +398,9 @@ for(int h=0; h<50; h++)
 		{
 			for(int l=0; l<784; l++)
 			{
-		//		activation_w1[j][l]/=batch_size;
 				w1[j][l]-=alpha*activation_w1[j][l];
 				activation_w1[j][l]=0;
 			}
-		//	activation_b1[j]/=batch_size;
 			b1[j]-=alpha*activation_b1[j];
 			activation_b1[j]=0;
 		}
